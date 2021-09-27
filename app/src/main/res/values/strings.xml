@@ -5,9 +5,13 @@
     <!--Country code-->
     <string-array name="CountryCodes" >
         <item>93,AF</item>
+        <item>1,AI</item>
+        <item>1,AS</item>
         <item>355,AL</item>
+        <item>358,AX</item>
         <item>213,DZ</item>
         <item>376,AD</item>
+        <item>1,AG</item>
         <item>244,AO</item>
         <item>672,AQ</item>
         <item>54,AR</item>
@@ -17,6 +21,9 @@
         <item>43,AT</item>
         <item>994,AZ</item>
         <item>973,BH</item>
+        <item>1,BB</item>
+        <item>1,BM</item>
+        <item>599,BQ</item>
         <item>880,BD</item>
         <item>375,BY</item>
         <item>32,BE</item>

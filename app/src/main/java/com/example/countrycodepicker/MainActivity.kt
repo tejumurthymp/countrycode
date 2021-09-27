@@ -13,10 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -34,6 +31,7 @@ import com.example.countrycodepicker.ui.theme.Purple200
 import com.example.countrycodepicker.ui.theme.Purple500
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class MainActivity : ComponentActivity() {
 
@@ -48,6 +46,12 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Log.e(TAG, "onCreate: country size: ${Locale.getISOCountries().size}")
+
+                    val country = "INDIA"
+                    Log.e(TAG, "onCreate1: ${country.hashCode()}" )
+                    country.lowercase(locale = Locale.getDefault())
+                    Log.e(TAG, "onCreate2: ${country.hashCode()} , $country" )
+
                     Scaffold(topBar = { TopBar() }) { CountryNavigation() }
                 }
             }
@@ -90,8 +94,20 @@ fun CountryListScreen(navController: NavHostController) {
 @Composable
 fun CountryList(textVal: MutableState<TextFieldValue>) {
     val context = LocalContext.current
+    val defaultCodes = Locale.getISOCountries()
     val countries = getListOfCountries()
     var filteredCountries: ArrayList<String>
+    var countryCodeArray: Array<String>
+    val countryCodeMap: HashMap<String,String> = hashMapOf()
+
+    SideEffect {
+        countryCodeArray = context.resources.getStringArray(R.array.CountryCodes)
+
+        for (countryCode in countryCodeArray) {
+            val countryStrings = countryCode.split(",")
+            countryCodeMap[countryStrings[1]] = countryStrings[0]
+        }
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -116,6 +132,9 @@ fun CountryList(textVal: MutableState<TextFieldValue>) {
             CountryListItem(
                 countryText = filteredCountries[it]
             ) { selectedCountry ->
+                val locale = Locale("", defaultCodes[it])
+                Log.e("CountryCode", "CountryList: countryCode: ${countryCodeMap[locale.country]}" )
+
                 Toast.makeText(context, "country: $selectedCountry", Toast.LENGTH_LONG).show()
             }
         }
